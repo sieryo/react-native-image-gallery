@@ -1,59 +1,92 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { useEffect, useState } from "react";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { images } from "@/constants";
+import { Link } from "expo-router";
+import apiBaseUrl from "@/constants/api";
+import { useNavigation } from "@react-navigation/native";
+import { resizeImage } from "../detail";
+import ImageResizeComponent from "@/components/ImageResizeComponent";
 
-export default function HomeScreen() {
+export type DataImage = {
+  id: string;
+  image: string;
+  name: string;
+};
+
+const windowDimentions = Dimensions.get("window");
+
+const GalleryScreen = () => {
+  const [dataImages, setDataImages] = useState<DataImage[]>();
+  const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation();
+
+  const getDataImages = async () => {
+    try {
+      const res = await fetch(`${apiBaseUrl}/gallery`);
+      const json: DataImage[] = await res.json();
+      json[1].image =
+        "https://gallery-api.baradeveloper.com/static/images/beautiful-scenery.jpeg";
+      setDataImages(json);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getDataImages();
+  }, []);
+
+  const leftColumnData = dataImages?.filter((_, index) => index % 2 !== 0);
+  const rightColumnData = dataImages?.filter((_, index) => index % 2 === 0);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View className=" bg-primary flex-1">
+      <ParallaxScrollView
+        title="Gallery"
+        headerImage={<Image source={images.testing} />}
+      >
+        <View className=" w-full flex-1 min-h-screen  bg-primary overflow-hidden flex-row flex-wrap ">
+          <View className=" flex-1">
+            {!isLoading &&
+              leftColumnData?.map((data) => (
+                <ImageResizeComponent key={data.id} {...data} />
+              ))}
+          </View>
+          <View className=" flex-1">
+            {!isLoading &&
+              rightColumnData?.map((data) => (
+                <ImageResizeComponent key={data.id} {...data} />
+              ))}
+          </View>
+
+          {isLoading && <Text>Loading.....</Text>}
+
+        </View>
+      </ParallaxScrollView>
+      <StatusBar backgroundColor="black" />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   stepContainer: {
@@ -65,6 +98,8 @@ const styles = StyleSheet.create({
     width: 290,
     bottom: 0,
     left: 0,
-    position: 'absolute',
+    position: "absolute",
   },
 });
+
+export default GalleryScreen;
