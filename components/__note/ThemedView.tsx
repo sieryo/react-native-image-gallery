@@ -1,3 +1,5 @@
+// HANYA UNTUK REFERENSI. DIPUSH KARENA AGAR TIDAK HILANG. 
+
 import { View, type ViewProps } from "react-native";
 
 import { useThemeColor } from "@/hooks/useThemeColor";

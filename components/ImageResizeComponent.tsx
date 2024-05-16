@@ -1,15 +1,23 @@
 import { View, Text, Dimensions, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import { resizeImage } from "@/app/detail";
 import { DataImage } from "@/app/(tabs)";
 import { useNavigation } from "@react-navigation/native";
+import { Link } from "expo-router";
+
+export const resizeImage = (
+    originalWidth: number,
+    originalHeight: number,
+    newWidth: number
+  ) => {
+    const aspectRatio = originalHeight / originalWidth;
+    const newHeight = newWidth * aspectRatio;
+    return { width: newWidth, height: Math.round(newHeight) };
+  };
 
 const windowDimension = Dimensions.get("window");
 
 const ImageResizeComponent = ({ id, image, name }: DataImage) => {
   const [newDimensions, setNewDimensions] = useState({ width: 0, height: 0 });
-  const navigation = useNavigation();
-
 
   useEffect(() => {
     // @ts-ignore
@@ -31,18 +39,11 @@ const ImageResizeComponent = ({ id, image, name }: DataImage) => {
         padding: 4,
       }}
     >
-      <TouchableOpacity
-        onPress={() =>
-          // @ts-ignore
-          navigation.navigate("detail", {id,image,name})
-        }
-      >
-        <Image
-          source={{ uri: image }}
-          className=" w-full h-full rounded-lg"
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
+      <Image
+        source={{ uri: image }}
+        className=" w-full h-full rounded-lg  "
+        resizeMode="contain"
+      />
     </View>
   );
 };

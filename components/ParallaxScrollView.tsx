@@ -46,7 +46,11 @@ const ParallaxScrollView = ({
     };
   });
   return (
-    <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
+    <Animated.ScrollView
+      ref={scrollRef}
+      scrollEventThrottle={16}
+      overScrollMode={"never"}
+    >
       <Animated.View
         style={[headerAnimatedStyle]}
         className={`h-[180px] overflow-hidden justify-center px-8 bg-secondary-100/90 `}

@@ -3,18 +3,16 @@ import React from 'react'
 import { Stack } from 'expo-router'
 import { useRoute } from '@react-navigation/native';
 
-const ImagesLayout = () => {
+const DetailImageLayout = () => {
   const route = useRoute();
 
-  // @ts-ignore
-  const imageData = route.params;
+  console.log("halooeee")
 
   return (
     <Stack>
-        <Stack.Screen name='index' options={{headerShown: false}} initialParams={imageData} />
-        {/* <Stack.Screen name='index' options={{headerShown: true}} /> */}
+        <Stack.Screen name='index' options={{headerShown: false}} initialParams={route.params} />
     </Stack>
   )
 }
 
-export default ImagesLayout
+export default DetailImageLayout;

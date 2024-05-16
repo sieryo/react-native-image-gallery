@@ -13,10 +13,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
 import { Ionicons } from "@expo/vector-icons";
-import { resizeImage } from "@/components/ImageResizeComponent";
-import RenderComment from "@/components/RenderComment";
 
-export type CommentType = {
+type CommentType = {
   comment: string;
   name: string;
 };
@@ -28,6 +26,17 @@ type ImageDetailType = {
   name: string;
   comments: CommentType[];
 };
+
+export const resizeImage = (
+  originalWidth: number,
+  originalHeight: number,
+  newWidth: number
+) => {
+  const aspectRatio = originalHeight / originalWidth;
+  const newHeight = newWidth * aspectRatio;
+  return { width: newWidth, height: Math.round(newHeight) };
+};
+
 const ImageDetailScreen = () => {
   const windowDimension = Dimensions.get("window");
 
@@ -89,48 +98,32 @@ const ImageDetailScreen = () => {
         </Link>
       </View>
       <SafeAreaView className=" bg-slate-100 flex-1 relative">
-        <ScrollView className="flex-1" overScrollMode="never">
-          <Image
-            // @ts-ignore
-            source={{ uri: image }}
-            className="  shadow-2xl "
-            resizeMode="contain"
-            style={{
-              width: newDimensions.width,
-              height: newDimensions.height,
-            }}
-          />
+        <Image
+          // @ts-ignore
+          source={{ uri: image }}
+          className="  shadow-2xl  "
+          resizeMode="contain"
+          style={{
+            width: newDimensions.width,
+            height: newDimensions.height,
+          }}
+        />
+        <ScrollView className="flex-1">
           <View className={`h-[500px] bg-primary w-full `}>
             <View className=" min-h-[50px]  p-3 border-b border-gray-100">
               {isLoading ? (
-                <>
-                  <View className=" h-[40px] rounded-xl w-[300px] bg-gray-400/50"></View>
-                  <View className=" h-[20px] mt-4 rounded-xl w-[100px] bg-gray-400/50"></View>
-                </>
+                <View className=" h-[40px] rounded-xl w-[300px] bg-gray-400/50"></View>
               ) : (
-                <>
-                  <Text className=" text-secondary-200 text-2xl font-pmedium">
-                    {imageDetailData?.name}
-                  </Text>
-                  <View className=" flex-row px-1 mt-2">
-                    <Ionicons
-                      size={20}
-                      name="heart-sharp"
-                      color={"#C40C0C"}
-                      className=" w-full "
-                    />
-                    <Text className=" text-secondary-200 ml-1 text-md font-pregular">
-                      {imageDetailData?.like}
-                    </Text>
-                  </View>
-                </>
+                <Text className=" text-secondary-200 text-xl font-pmedium">
+                  {imageDetailData?.name}
+                </Text>
               )}
             </View>
             <View className=" p-3">
               {isLoading ? (
                 <View className=" w-full h-[40px] bg-gray-400/50 rounded-lg"></View>
               ) : (
-                <Text className=" text-secondary-200 text-xl font-pregular">
+                <Text className=" text-secondary-200 text-2xl font-pregular">
                   {totalComments} komentar
                 </Text>
               )}
@@ -141,7 +134,26 @@ const ImageDetailScreen = () => {
                   data={imageDetailData?.comments}
                   scrollEnabled={false}
                   className=""
-                  renderItem={({ item }) => <RenderComment {...item} />}
+                  renderItem={({ item }) => (
+                    <View className=" min-h-[50px] items-center p-1 mt-2  flex-row">
+                      <View className=" min-h-[45px] items-center justify-center bg-slate-500 w-[45px] rounded-full">
+                        <Ionicons
+                          size={28}
+                          name="person-outline"
+                          color={"white"}
+                          className=" w-full h-[30px] z-30"
+                        />
+                      </View>
+                      <View className=" flex-1 ml-2">
+                        <Text className=" text-secondary-200 text-lg font-pregular">
+                          {item.name}
+                        </Text>
+                        <Text className=" text-secondary-100 text-sm font-plight">
+                          {item.comment}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
                 />
               )}
             </View>

@@ -8,16 +8,15 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { useEffect, useState } from "react";
 
 import { images } from "@/constants";
-import { Link } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import apiBaseUrl from "@/constants/api";
-import { useNavigation } from "@react-navigation/native";
-import { resizeImage } from "../detail";
 import ImageResizeComponent from "@/components/ImageResizeComponent";
 
 export type DataImage = {
@@ -35,6 +34,7 @@ const GalleryScreen = () => {
 
   const getDataImages = async () => {
     try {
+      console.log("TESTING");
       const res = await fetch(`${apiBaseUrl}/gallery`);
       const json: DataImage[] = await res.json();
       json[1].image =
@@ -57,7 +57,7 @@ const GalleryScreen = () => {
   return (
     <View className=" bg-primary flex-1">
       <ParallaxScrollView
-        title="Gallery"
+        title="Galleries"
         headerImage={<Image source={images.testing} />}
       >
         <View className=" w-full flex-1 min-h-screen  bg-primary overflow-hidden flex-row flex-wrap ">
@@ -65,47 +65,58 @@ const GalleryScreen = () => {
           {isLoading ? (
             <>
               <View className=" flex-1 p-1 space-y-1">
-                <View className=" w-full h-[250px] bg-slate-400">
-
-                </View>
-                <View className=" w-full h-[200px] bg-slate-400">
-
-                </View>
-                <View className=" w-full h-[180px] bg-slate-400">
-
-                </View>
+                <View className=" w-full h-[250px] bg-slate-400"></View>
+                <View className=" w-full h-[200px] bg-slate-400"></View>
+                <View className=" w-full h-[180px] bg-slate-400"></View>
               </View>
               <View className=" flex-1 p-1 space-y-1">
-                <View className=" w-full h-[200px] bg-slate-400">
-
-                </View>
-                <View className=" w-full h-[190px] bg-slate-400">
-
-                </View>
-                <View className=" w-full h-[180px] bg-slate-400">
-
-                </View>
+                <View className=" w-full h-[200px] bg-slate-400"></View>
+                <View className=" w-full h-[190px] bg-slate-400"></View>
+                <View className=" w-full h-[180px] bg-slate-400"></View>
               </View>
             </>
           ) : (
             <>
-              <View className=" flex-1">
+              <View className=" flex-1 ">
                 {!isLoading &&
                   leftColumnData?.map((data) => (
-                    <ImageResizeComponent key={data.id} {...data} />
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        console.log("woi halo ");
+
+                        // @ts-ignore
+                        navigation.navigate("detail", data);
+                      }}
+                      key={data.id}
+                    >
+                      <View>
+                        <ImageResizeComponent {...data} />
+                      </View>
+                    </TouchableWithoutFeedback>
                   ))}
               </View>
               <View className=" flex-1">
                 {!isLoading &&
                   rightColumnData?.map((data) => (
-                    <ImageResizeComponent key={data.id} {...data} />
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        console.log("woi halo ");
+
+                        // @ts-ignore
+                        navigation.navigate("detail", data);
+                      }}
+                      key={data.id}
+                    >
+                      <View>
+                        <ImageResizeComponent {...data} />
+                      </View>
+                    </TouchableWithoutFeedback>
                   ))}
               </View>
             </>
           )}
         </View>
       </ParallaxScrollView>
-      <StatusBar backgroundColor="black" />
     </View>
   );
 };
