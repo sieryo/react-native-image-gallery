@@ -9,6 +9,11 @@ import CustomButton from '@/components/CustomButton'
 import { showToast } from '@/lib/showToast'
 import ProfileComponent from '@/components/ProfileComponent'
 
+export type UserProfile = {
+  name: string,
+  address: string,
+}
+
 
 
 const Profile = () => {
