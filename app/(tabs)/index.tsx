@@ -61,21 +61,48 @@ const GalleryScreen = () => {
         headerImage={<Image source={images.testing} />}
       >
         <View className=" w-full flex-1 min-h-screen  bg-primary overflow-hidden flex-row flex-wrap ">
-          <View className=" flex-1">
-            {!isLoading &&
-              leftColumnData?.map((data) => (
-                <ImageResizeComponent key={data.id} {...data} />
-              ))}
-          </View>
-          <View className=" flex-1">
-            {!isLoading &&
-              rightColumnData?.map((data) => (
-                <ImageResizeComponent key={data.id} {...data} />
-              ))}
-          </View>
+          {/* SKELETON PLACEHOLDER, MASIH MANUAL NANTI DIPERBAIKI 😂 */}
+          {isLoading ? (
+            <>
+              <View className=" flex-1 p-1 space-y-1">
+                <View className=" w-full h-[250px] bg-slate-400">
 
-          {isLoading && <Text>Loading.....</Text>}
+                </View>
+                <View className=" w-full h-[200px] bg-slate-400">
 
+                </View>
+                <View className=" w-full h-[180px] bg-slate-400">
+
+                </View>
+              </View>
+              <View className=" flex-1 p-1 space-y-1">
+                <View className=" w-full h-[200px] bg-slate-400">
+
+                </View>
+                <View className=" w-full h-[190px] bg-slate-400">
+
+                </View>
+                <View className=" w-full h-[180px] bg-slate-400">
+
+                </View>
+              </View>
+            </>
+          ) : (
+            <>
+              <View className=" flex-1">
+                {!isLoading &&
+                  leftColumnData?.map((data) => (
+                    <ImageResizeComponent key={data.id} {...data} />
+                  ))}
+              </View>
+              <View className=" flex-1">
+                {!isLoading &&
+                  rightColumnData?.map((data) => (
+                    <ImageResizeComponent key={data.id} {...data} />
+                  ))}
+              </View>
+            </>
+          )}
         </View>
       </ParallaxScrollView>
       <StatusBar backgroundColor="black" />

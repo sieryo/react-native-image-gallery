@@ -7,14 +7,14 @@ import SignInForm from '@/components/SignInForm'
 import useAuthStore from '@/hooks/useAuthStore'
 import CustomButton from '@/components/CustomButton'
 import { showToast } from '@/lib/showToast'
+import ProfileComponent from '@/components/ProfileComponent'
+
+
 
 const Profile = () => {
-  const {token, loadToken, removeToken} = useAuthStore()
+  const {token, removeToken, loadToken} = useAuthStore()
 
-  const signOut = () => {
-    removeToken();
-    showToast("info", "Anda telah logout")
-  }
+ 
 
   useEffect(() => {
     loadToken()
@@ -27,13 +27,10 @@ const Profile = () => {
   };
 
   return (
-    <SafeAreaView>
-      <Text>{token}</Text>
-      <CustomButton 
-      title='Logout'
-      handlePress={signOut}
-      />
-    </SafeAreaView>
+    <ProfileComponent 
+      token={token}
+      removeToken={removeToken}
+    />
   )
 }
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import * as SecureStore from "expo-secure-store";
 
-type Auth = {
+export type Auth = {
   token: string | null;
   setToken: (token: string) => void;
   loadToken: () => void;
