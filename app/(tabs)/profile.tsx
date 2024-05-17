@@ -1,12 +1,7 @@
 import { View, Text } from "react-native";
-import React, { useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useSession } from "@/hooks/useSession";
-import { router } from "expo-router";
+import React, { useEffect, useState } from "react";
 import SignInForm from "@/components/SignInForm";
 import useAuthStore from "@/hooks/useAuthStore";
-import CustomButton from "@/components/CustomButton";
-import { showToast } from "@/lib/showToast";
 import ProfileComponent from "@/components/ProfileComponent";
 
 export type UserProfile = {
@@ -14,14 +9,20 @@ export type UserProfile = {
   address: string;
 };
 
+
 const Profile = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { token, removeToken, loadToken } = useAuthStore();
 
   useEffect(() => {
     loadToken();
-  }, [loadToken]);
+    setIsLoading(false);
+  }, []);
 
   if (!token) {
+    if (isLoading) {
+      return <Text>Loading...</Text>;
+    }
     return <SignInForm />;
   }
 

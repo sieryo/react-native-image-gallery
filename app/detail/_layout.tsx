@@ -6,7 +6,6 @@ import { useRoute } from '@react-navigation/native';
 const DetailImageLayout = () => {
   const route = useRoute();
 
-  console.log("halooeee")
 
   return (
     <Stack>

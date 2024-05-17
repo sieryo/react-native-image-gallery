@@ -18,6 +18,7 @@ import { images } from "@/constants";
 import { Link, useNavigation } from "expo-router";
 import apiBaseUrl from "@/constants/api";
 import ImageResizeComponent from "@/components/ImageResizeComponent";
+import useAuthStore from "@/hooks/useAuthStore";
 
 export type DataImage = {
   id: string;
@@ -28,6 +29,7 @@ export type DataImage = {
 const windowDimentions = Dimensions.get("window");
 
 const GalleryScreen = () => {
+  const {loadToken} = useAuthStore()
   const [dataImages, setDataImages] = useState<DataImage[]>();
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
@@ -49,6 +51,8 @@ const GalleryScreen = () => {
 
   useEffect(() => {
     getDataImages();
+    // Cek apakah ada token atau tidak.
+    loadToken();
   }, []);
 
   const leftColumnData = dataImages?.filter((_, index) => index % 2 !== 0);
@@ -61,7 +65,6 @@ const GalleryScreen = () => {
         headerImage={<Image source={images.testing} />}
       >
         <View className=" w-full flex-1 min-h-screen  bg-primary overflow-hidden flex-row flex-wrap ">
-          {/* SKELETON PLACEHOLDER, MASIH MANUAL NANTI DIPERBAIKI 😂 */}
           {isLoading ? (
             <>
               <View className=" flex-1 p-1 space-y-1">

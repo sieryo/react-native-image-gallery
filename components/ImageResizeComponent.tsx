@@ -16,7 +16,7 @@ export const resizeImage = (
 
 const windowDimension = Dimensions.get("window");
 
-const ImageResizeComponent = ({ id, image, name }: DataImage) => {
+const ImageResizeComponent = ({ id, image }: DataImage) => {
   const [newDimensions, setNewDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
