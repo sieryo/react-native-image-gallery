@@ -28,18 +28,15 @@ type ImageDetailType = {
   name: string;
   comments: CommentType[];
 };
-const ImageDetailScreen = () => {
+const DetailImageScreen = () => {
   const windowDimension = Dimensions.get("window");
-
   const { id, image } = useLocalSearchParams();
 
-  const [imageDetailData, setImageDetailData] = useState<ImageDetailType>();
+  const [detailImageData, setDetailImageData] = useState<ImageDetailType>();
   const [isLoading, setIsLoading] = useState(true);
-
-  // Testing
   const [newDimensions, setNewDimensions] = useState({ width: 0, height: 0 });
 
-  const getImageDetailData = async () => {
+  const getDetailImageData = async () => {
     try {
       const res = await fetch(
         `https://gallery-api.baradeveloper.com/gallery/${id}`
@@ -49,7 +46,7 @@ const ImageDetailScreen = () => {
         resData.image =
           "https://gallery-api.baradeveloper.com/static/images/beautiful-scenery.jpeg";
       }
-      setImageDetailData(resData);
+      setDetailImageData(resData);
     } catch (err) {
       console.error(err);
     } finally {
@@ -58,7 +55,7 @@ const ImageDetailScreen = () => {
   };
 
   useEffect(() => {
-    getImageDetailData();
+    getDetailImageData();
     // @ts-ignore
     Image.getSize(image, (originalWidth, originalHeight) => {
       const { width, height } = resizeImage(
@@ -70,7 +67,7 @@ const ImageDetailScreen = () => {
     });
   }, []);
 
-  const totalComments = imageDetailData?.comments.length;
+  const totalComments = detailImageData?.comments.length;
 
   {
     isLoading && <Text className=" text-5xl font-pmedium">Loading....</Text>;
@@ -110,7 +107,7 @@ const ImageDetailScreen = () => {
               ) : (
                 <>
                   <Text className=" text-secondary-200 text-2xl font-pmedium">
-                    {imageDetailData?.name}
+                    {detailImageData?.name}
                   </Text>
                   <View className=" flex-row px-1 mt-2">
                     <Ionicons
@@ -120,7 +117,7 @@ const ImageDetailScreen = () => {
                       className=" w-full "
                     />
                     <Text className=" text-secondary-200 ml-1 text-md font-pregular">
-                      {imageDetailData?.like}
+                      {detailImageData?.like}
                     </Text>
                   </View>
                 </>
@@ -138,7 +135,7 @@ const ImageDetailScreen = () => {
                 <View className=" w-full bg-gray-400/50 h-[250px] overflow-hidden mt-4 rounded-md"></View>
               ) : (
                 <FlatList
-                  data={imageDetailData?.comments}
+                  data={detailImageData?.comments}
                   scrollEnabled={false}
                   className=""
                   renderItem={({ item }) => <RenderComment {...item} />}
@@ -153,4 +150,4 @@ const ImageDetailScreen = () => {
   );
 };
 
-export default ImageDetailScreen;
+export default DetailImageScreen;

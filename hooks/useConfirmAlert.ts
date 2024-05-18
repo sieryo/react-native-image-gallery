@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import * as SecureStore from "expo-secure-store";
 
 export type ConfirmAlert = {
   isClosed: boolean;

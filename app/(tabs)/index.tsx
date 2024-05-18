@@ -26,7 +26,6 @@ export type DataImage = {
   name: string;
 };
 
-const windowDimentions = Dimensions.get("window");
 
 const GalleryScreen = () => {
   const {loadToken} = useAuthStore()
@@ -36,7 +35,6 @@ const GalleryScreen = () => {
 
   const getDataImages = async () => {
     try {
-      console.log("TESTING");
       const res = await fetch(`${apiBaseUrl}/gallery`);
       const json: DataImage[] = await res.json();
       json[1].image =
@@ -85,8 +83,7 @@ const GalleryScreen = () => {
                   leftColumnData?.map((data) => (
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log("woi halo ");
-
+                        console.log("Berfungsi!");
                         // @ts-ignore
                         navigation.navigate("detail", data);
                       }}
@@ -103,7 +100,6 @@ const GalleryScreen = () => {
                   rightColumnData?.map((data) => (
                     <TouchableWithoutFeedback
                       onPress={() => {
-                        console.log("woi halo ");
 
                         // @ts-ignore
                         navigation.navigate("detail", data);
@@ -123,24 +119,5 @@ const GalleryScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-});
 
 export default GalleryScreen;

@@ -19,7 +19,6 @@ const ProfileComponent = ({
   token: string;
   removeToken: () => void;
 }) => {
-  const { setCallback, toggleIsClosed } = useConfirmAlert();
   const [profileData, setProfileData] = useState<UserProfile>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,6 +46,7 @@ const ProfileComponent = ({
     removeToken();
     showToast("info", "Anda telah logout");
   };
+
   return (
     <>
       <ConfirmAlert
@@ -80,7 +80,7 @@ const ProfileComponent = ({
           <Text className=" font-pregular text-md px-2 mt-2">Akun</Text>
           <ActionButton
             title="Logout"
-            description=" Jika kamu logout, kamu harus memasukkan username dan
+            description="Jika kamu logout, kamu harus memasukkan username dan
           password lagi."
             confirmAlertTitle="Apakah kamu yakin ingin logout?"
             callback={signOut}

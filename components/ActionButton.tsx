@@ -25,9 +25,6 @@ const ActionButton = ({
         toggleIsClosed()
         setCallback(callback)
     }
-
-
-
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
       <View className=" w-full h-[90px]  flex-row">
